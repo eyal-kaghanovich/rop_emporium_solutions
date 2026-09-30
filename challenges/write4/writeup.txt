@@ -1,0 +1,41 @@
+Eyal Kaghanovich
+
+using gdb i find the offset to clobber rbp: 0x20
+
+then i structure the payload:
+
+1. clobber rbp with 0
+2. hijack program execution flow and ret to the
+
+first gadget:
+    pop rsi
+    pop r15
+    ret
+
+3. i feed rsi and r15 the values: <data_section_start>, 0
+4. i ret to the
+
+2nd gadget:
+    pop rdi
+    ret
+
+5. i feed rdi the value: b"flagzzzz", a 64bit value with the low 32 bits(edi) equal to b"flag"
+
+6. i ret to the
+
+3rd gadget:
+    mov [rsi], edi
+    ret
+
+7. this moves b"flag" to the start of the data section(from 3)
+
+8. i ret to the first gadget again and i feed rsi: data_section_start + 4 and r15 0
+   now rsi points to data+4, right after b"flag"
+
+9. i ret to the 2nd gadget and load into rdi the value: b".txtzzzz"
+
+10. i ret to the 3rd gadget which writes the full b"flag.txt" value to the start of .data
+
+11. i ret again to the 2nd gadget and load rdi with the address of b"flag.txt" in .data start
+
+12. i call the plt stub for print_file. as if calling print_file(b"flag.txt") via the sysV ABI calling convention
