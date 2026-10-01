@@ -1,6 +1,0 @@
-[tool.basedpyright.analysis.diagnosticSeverityOverrides]
-reportAny = "none"
-reportExplicitAny = "none"
-reportUnknownVariableType = "none"
-reportUnknownParameterType = "none"
-
