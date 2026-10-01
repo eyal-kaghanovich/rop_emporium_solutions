@@ -1,2 +1,18 @@
 .idea/
 .venv/
+
+# Python project config
+pyproject.toml
+
+# GDB history files
+.gdb_history
+
+# ROP Emporium shared objects
+*.so
+
+# ROP Emporium challenge binaries
+challenges/ret2win/ret2win
+challenges/callme/callme
+challenges/split/split
+challenges/write4/write4
+challenges/badchars/badchars
